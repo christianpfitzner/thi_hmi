@@ -1,0 +1,97 @@
+#!/usr/bin/python
+
+import os
+import datetime
+
+import rospy
+
+from std_msgs.msg import String
+import pyttsx
+
+import numpy as np 
+
+arr = np.array([('Hello', 'I say Hello 1', 'beep'), 
+                ('Hello', 'I say Hello 2', 'beep')],
+       dtype=[('input',   (np.str_, 100)), 
+               ('say',    (np.str_, 100)), 
+               ('action', (np.str_, 100))]) 
+
+
+def handle_output(data):
+    """Map out grammar recognized commands in speech to terminal commands"""
+
+    for x in arr: 
+
+        engine = pyttsx.init()
+        # engine.startLoop()
+        engine.setProperty('voice', 'english+f3')
+        engine.setProperty('speed', '70')
+        engine.say(x[1])
+        engine.runAndWait()
+        # engine.endLoop()
+        engine.startLoop()
+        engine.iterate()
+
+        
+
+
+
+    print (data.data)
+    if "go to my workspace" in data.data.lower():
+        engine = pyttsx.init()
+        engine.setProperty('voice', 'english+f3')
+        engine.setProperty('speed', '70')
+
+        engine.say("Right away, master!")
+        engine.runAndWait()
+        os.system("nautilus --browser /home/pankaj/catkin_ws/src/pocketsphinx")
+    elif "where is avenger base" in data.data.lower():
+        engine = pyttsx.init()
+        engine.setProperty('voice', 'english+f3')
+        engine.say('I am sorry! That is classified information')
+        engine.runAndWait()
+    elif "what time is it" in data.data.lower():
+        message = 'It is ' + datetime.datetime.now().strftime("%H:%M") + ' hours'
+        print (message)
+        engine = pyttsx.init()
+        engine.setProperty('speed', '70')
+        engine.setProperty('voice', 'english+f3')
+        engine.say(message)
+        engine.runAndWait()
+    elif "good night jarvis" in data.data.lower():
+        message = 'good night, master!'
+        engine = pyttsx.init()
+        engine.setProperty('voice', 'english+f3')
+        engine.say(message)
+        engine.runAndWait()
+
+def shutdown():
+    """This function is executed on node shutdown."""
+    # command executed after Ctrl+C is pressed
+    rospy.loginfo("Stop ASRControl")
+    rospy.sleep(1)
+
+def init():
+    """Initialize node and subscribe to necessary topics"""
+
+    # initialize node
+    rospy.init_node("command_control")
+
+    # Call custom function on node shutdown
+    rospy.on_shutdown(shutdown)
+
+    # engine = pyttsx.init()
+
+    # engine.say("Oh, hello!")
+    # engine.say("It's nice to meet you.")
+    # engine.say("I hope you are doing well.")
+    # engine.say("Would you like to join us ")
+    # engine.say ("tomorrow at eight for dinner?")
+
+    rospy.Subscriber("grammar_data", String, handle_output)
+    rospy.spin()
+
+
+
+if __name__ == "__main__":
+    init()
