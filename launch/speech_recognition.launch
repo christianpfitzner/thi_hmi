@@ -19,6 +19,9 @@
     <remap from="robotsound" to="sound_play" />
   </node>
 
+  <node pkg="thi_hmi" type="speech_to_ctrl.py" name="speech_to_ctrl_node">
+  </node>
+
 
   <node name="audio_capture" pkg="audio_capture" type="audio_capture"
         if="$(arg launch_audio_capture)"

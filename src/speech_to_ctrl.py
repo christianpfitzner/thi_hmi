@@ -33,7 +33,7 @@ def handle_output(msg):
         engine = pyttsx3.init()
         # engine.startLoop()
         engine.setProperty('voice', 'english+f3')
-        engine.setProperty('speed', '70')
+        engine.setProperty('speed', '50')
         if(data.lower() == x[0].lower()):
             engine.say(x[1])
             engine.runAndWait()
@@ -48,7 +48,7 @@ def handle_output(msg):
     if "go to my workspace" in data.lower():
         engine = pyttsx3.init()
         engine.setProperty('voice', 'english+f3')
-        engine.setProperty('speed', '70')
+        engine.setProperty('speed', '50')
 
         engine.say("Right away, master!")
         engine.runAndWait()
@@ -62,8 +62,8 @@ def handle_output(msg):
         message = 'It is ' + datetime.datetime.now().strftime("%H:%M") + ' hours'
         print (message)
         engine = pyttsx3.init()
-        engine.setProperty('speed', '70')
-        engine.setProperty('voice', 'english+f3')
+        engine.setProperty('speed', '50')
+        engine.setProperty('voice', 'english+f2')
         engine.say(message)
         engine.runAndWait()
     elif "goodnight jarvis" in data.lower():
